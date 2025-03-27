@@ -14,12 +14,6 @@
 }
 
 /*styling for tag*/
-p {
-    padding: 0%;
-    margin: 0%;
-    font-family: var(--button-font);
-}
-
 h1 {
     padding: 0%;
     margin: 0%;
@@ -27,10 +21,20 @@ h1 {
     font-size: var(--header-size);
 }
 
+button {
+    font-family: var(--button-font);
+    font-size: 1em;
+    width: calc(100% - 0vw);
+    display: flex;
+    align-items: center ;
+    padding: 0em 0em 0em 1.5em;
+    margin: 0%;
+}
+
 
 
 /*---------------------------------------*/
-.SideBar {
+.sideBar {
     height: calc(100vh - 0vh);
     width: calc(100vw - 70vw);
     background-color: #fffcf6;
@@ -40,9 +44,13 @@ h1 {
     
 }
 
-.SideBar-section {
-    padding: 0%;
+.sideBar-content {
+    padding: 3em 0em 0em 0.2em;
+}
+
+.sideBar-section {
     margin: 0%;
     display: flex;
     flex-direction: column;
+    padding: 4%;
 }
