@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+body {
+    background-color: #fffcf6; 
+}
+
+@theme {
+    --color-violet: #8659A5;
+    --webkit-text-stroke: 0.5px;
+}
+
+@layer base {
+    .text-stroke {
+        -webkit-text-stroke: #8659A5 1px;
+    }
+    .bg-main {
+        background-color: transparent;
+    }
+    .bg-violet {
+        background-color: #8659A5;
+    }
+    .border-main {
+        border: #8659A5 1.8px solid;
+        border-radius: 5px;
+    }
+}
