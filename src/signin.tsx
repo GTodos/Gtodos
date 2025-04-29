@@ -11,6 +11,7 @@ export default function Signin() {
                 <input className="bg-white border-main min-w-70 min-h-10" type="text" placeholder="Username" />
                 <input className="bg-white border-main min-w-70 min-h-10" type="password" placeholder="Password" />
                 <input className="bg-white border-main min-w-70 min-h-10" type="password" placeholder="Repeat Password" />
+                <input className="bg-white border-main min-w-70 min-h-10" type="email" placeholder="E-Mail" />
                 <button className='min-w-70 min-h-10 bg-violet text-white' type="submit">Login</button>
             </form>
             <Link to="/login">
