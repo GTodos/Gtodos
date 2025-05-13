@@ -1,11 +1,15 @@
 @import "tailwindcss";
 
 body {
+    height: 100%;
     background-color: #fffcf6; 
+    padding: 0%;
+    margin: 0%;
 }
 
 @theme {
     --color-violet: #8659A5;
+    --color-white-gray: #fffcf6;
     --webkit-text-stroke: 0.5px;
 }
 
