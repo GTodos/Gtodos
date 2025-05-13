@@ -52,8 +52,8 @@ export default function LoginComponent() {
             <img className='w-40 absolute top-0/4 left-1/2 -translate-x-1/2 -translate-y-1/2 ' src={logo} alt="GTodos Logo" />
             
             <div className="flex flex-col items-center justify-center gap-4">
-                <input value={username} onKeyDown={(e) => {console.log(e.key);if (e.key === "Enter")login();}} onChange={e => setUsername(e.target.value)} className="bg-white border-main min-w-70 min-h-10" type="text" placeholder="Username" />
-                <input value={password} onKeyDown={(e) => {console.log(e.key);if (e.key === "Enter")login();}} onChange={e => setPassword(e.target.value)} className="bg-white border-main min-w-70 min-h-10" type="password" placeholder="Password" />
+                <input value={username} onKeyDown={(e) => {if (e.key === "Enter")login();}} onChange={e => setUsername(e.target.value)} className="bg-white border-main min-w-70 min-h-10" type="text" placeholder="Username" />
+                <input value={password} onKeyDown={(e) => {if (e.key === "Enter")login();}} onChange={e => setPassword(e.target.value)} className="bg-white border-main min-w-70 min-h-10" type="password" placeholder="Password" />
                 <button onClick={login} type='button' className='min-w-70 min-h-10 bg-violet text-white'>Login</button>
             </div>
             <Link to="/signup">

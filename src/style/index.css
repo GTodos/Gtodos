@@ -47,6 +47,8 @@ button {
 }
 button:hover {
   border-color: violet;
+  background-color: transparent;
+  color: violet;
 }
 button:focus,
 button:focus-visible {
