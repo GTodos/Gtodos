@@ -59,10 +59,10 @@ export default function Signup() {
             <img className='w-40 absolute top-0/4 left-1/2 -translate-x-1/2 -translate-y-1/2 ' src={logo} alt="GTodos Logo" />
             
             <div className="flex flex-col items-center justify-center gap-4">
-                <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setUsername(e.target.value)} className="bg-white border-main min-w-70 min-h-10" type="text" placeholder="Username" />
-                <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setPassword(e.target.value)} className="bg-white border-main min-w-70 min-h-10" type="password" placeholder="Password" />
-                <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setPassword2(e.target.value)} className="bg-white border-main min-w-70 min-h-10" type="password" placeholder="Repeat Password" />
-                <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setEmail(e.target.value)} className="bg-white border-main min-w-70 min-h-10" type="email" placeholder="E-Mail" />
+                <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setUsername(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2" type="text" placeholder="Username" />
+                <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setPassword(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2" type="password" placeholder="Password" />
+                <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setPassword2(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2" type="password" placeholder="Repeat Password" />
+                <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setEmail(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2" type="email" placeholder="E-Mail" />
                 <button onClick={signup} className='min-w-70 min-h-10 bg-violet text-white'>Register</button>
             </div>
 

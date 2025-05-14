@@ -137,7 +137,7 @@ export default function Todos() {
                             {todo.content}
                         </div>
                         <div className="ml-auto">
-                            <button onClick={() => deleteTodo(event as any, todo.id)} className="bg-violet text-white flex justify-center items-center p-3"><Trash className="w-4 h-4"/></button>
+                            <button onClick={() => deleteTodo(event as any, todo.id)} className="bg-violet text-white flex justify-center items-center p-3 ml-5"><Trash className="w-4 h-4"/></button>
                         </div>
 
                         {/*<p>{todo.finished_at}</p>*/}
@@ -149,7 +149,7 @@ export default function Todos() {
             <div className="w-[calc(100vw-0vw)] bg-white-gray fixed bottom-0 left-0 p-5 drop-shadow-xl/50 flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-3">
                     <button onClick={createTodo} className="bg-violet text-white">Make new todo</button>
-                    <input className="border-violet border-2 p-0.5 rounded-xl" onChange={e => setTodoInput(e.target.value)} value={todoInput} type="text" placeholder="write your todo"/>
+                    <input className="border-violet border-2 rounded-xl p-1 pl-2" onChange={e => setTodoInput(e.target.value)} value={todoInput} type="text" placeholder="write your todo"/>
                 </div>
                 <div>
                     <button onClick={logout} className="bg-violet text-white">Log out</button>
