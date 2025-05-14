@@ -1,4 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { Trash } from "lucide-react";
 
 
 export default function Todos() {
@@ -82,6 +83,35 @@ export default function Todos() {
             });
     }
 
+    function deleteTodo(e: ChangeEvent<HTMLInputElement>, id: number) {
+        fetch(`http://localhost:9001/todos/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+            },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    console.error("Error deleting todo");
+                    return;
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                setTodos(todos.filter(todo => todo.id !== id));
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function logout() {
+        localStorage.removeItem('authToken');
+        window.location.href = '/login';
+    }
+
     useEffect(() => {
         getTodos();
     }, []);
@@ -91,9 +121,9 @@ export default function Todos() {
             <div className="flex flex-col items-start max-w-md max-auto">
                 <div className="flex flex-row items-baseline">
                     <h1 className="">GTodos</h1>
-                    <h2 className="text-3xl">todo list 0.1</h2>
+                    <h2 className="text-3xl">todo list v0.1</h2>
 
-                </div>
+                </div> 
             </div>
             
             <div className="flex flex-content-start flex-col pb-30 bg-white-gray">
@@ -106,8 +136,8 @@ export default function Todos() {
                         <div className="pl-4">
                             {todo.content}
                         </div>
-                        <div>
-                            <button className="bg-violet text-white">slette todo temp</button>
+                        <div className="ml-auto">
+                            <button onClick={() => deleteTodo(event as any, todo.id)} className="bg-violet text-white flex justify-center items-center p-3"><Trash className="w-4 h-4"/></button>
                         </div>
 
                         {/*<p>{todo.finished_at}</p>*/}
@@ -116,10 +146,13 @@ export default function Todos() {
             </div>
 
             
-            <div className="w-[calc(100vw-0vw)] bg-white-gray fixed bottom-0 left-0 p-5 drop-shadow-xl/50">
-                <div className="flex flex-row items-center gap-15">
+            <div className="w-[calc(100vw-0vw)] bg-white-gray fixed bottom-0 left-0 p-5 drop-shadow-xl/50 flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center gap-3">
                     <button onClick={createTodo} className="bg-violet text-white">Make new todo</button>
                     <input className="border-violet border-2 p-0.5 rounded-xl" onChange={e => setTodoInput(e.target.value)} value={todoInput} type="text" placeholder="write your todo"/>
+                </div>
+                <div>
+                    <button onClick={logout} className="bg-violet text-white">Log out</button>
                 </div>
             </div>
             

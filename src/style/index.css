@@ -50,6 +50,16 @@ button:hover {
   background-color: transparent;
   color: violet;
 }
+@media (max-width: 600px) {
+  button {
+    font-size:1em;
+    padding: 0.5em;
+  }
+  input {
+    width: calc(100vw - 70vw);
+    
+  }
+}
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
