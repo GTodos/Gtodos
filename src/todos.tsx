@@ -1,11 +1,15 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Trash, Pencil } from "lucide-react";
+import { Link, useNavigate } from 'react-router-dom';
+
 
 
 export default function Todos() {
 
     const [todos, setTodos] = useState<any[]>([]);
     const [todoInput, setTodoInput] = useState<string>('');
+    const navigate = useNavigate();
+
 
 
     function createTodo() {
@@ -20,6 +24,10 @@ export default function Todos() {
             .then(response => {
                 if (!response.ok) {
                     console.error("Error creating todo");
+                    if (response.status === 401) {
+                        alert("Session expired, please log in again");
+                        navigate('/login');
+                    }
                     return;
                 }
                 return response.json();
@@ -43,6 +51,10 @@ export default function Todos() {
             .then(response => {
                 if (!response.ok) {
                     console.error("Error getting todos");
+                    if (response.status === 401) {
+                        alert("Session expired, please log in again");
+                        navigate('/login');
+                    }
                     return;
                 }
                 return response.json();
@@ -70,6 +82,10 @@ export default function Todos() {
             .then(response => {
                 if (!response.ok) {
                     console.error("Error updating todo");
+                    if (response.status === 401) {
+                        alert("Session expired, please log in again");
+                        navigate('/login');
+                    }
                     return;
                 }
                 return response.json();
@@ -94,6 +110,10 @@ export default function Todos() {
             .then(response => {
                 if (!response.ok) {
                     console.error("Error deleting todo");
+                    if (response.status === 401) {
+                        alert("Session expired, please log in again");
+                        navigate('/login');
+                    }
                     return;
                 }
                 return response.json();
@@ -121,6 +141,10 @@ export default function Todos() {
                 .then(response => {
                     if (!response.ok) {
                         console.error("Error updating todo");
+                        if (response.status === 401) {
+                            alert("Session expired, please log in again");
+                            navigate('/login');
+                        }
                         return;
                     }
                     return response.json();
@@ -131,6 +155,7 @@ export default function Todos() {
                 })
                 .catch(error => {
                     console.error('Error:', error);
+                    window.location.href = '/login';
                 });
         }
     }
