@@ -2,6 +2,7 @@ import { useState } from 'react';
 import logo from './img/GTodos_Logo_text.svg';
 import { Link } from 'react-router';
 import { useNavigate } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 
 
 
@@ -11,6 +12,11 @@ export default function LoginComponent() {
     const [password, setPassword] = useState<string | undefined>("");
     const [error, setError] = useState(false);
     const navigate = useNavigate();
+
+    const [showPassword, setShowPassword] = useState(false);
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    }
 
     function login() {
         if (username === undefined || password === undefined) {
@@ -52,8 +58,14 @@ export default function LoginComponent() {
             <img className='w-40 absolute top-0/4 left-1/2 -translate-x-1/2 -translate-y-1/2 ' src={logo} alt="GTodos Logo" />
             
             <div className="flex flex-col items-center justify-center gap-4">
+
                 <input value={username} onKeyDown={(e) => {if (e.key === "Enter")login();}} onChange={e => setUsername(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2" type="text" placeholder="Username" />
-                <input value={password} onKeyDown={(e) => {if (e.key === "Enter")login();}} onChange={e => setPassword(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2" type="password" placeholder="Password" />
+
+                <div className='relative inline-block'>
+                    <input value={password} onKeyDown={(e) => {if (e.key === "Enter")login();}} onChange={e => setPassword(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2" type={showPassword ? "text" : "password"} placeholder="Password" />
+                    <button onClick={togglePasswordVisibility} className='w-5 h-5 !p-0 absolute top-2 right-3 !border-none'>{showPassword ? <Eye></Eye> : <EyeOff></EyeOff>}</button>
+                </div>
+                
                 <button onClick={login} type='button' className='min-w-70 min-h-10 bg-violet text-white'>Login</button>
             </div>
             <Link to="/signup">

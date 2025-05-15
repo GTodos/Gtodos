@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import logo from './img/GTodos_Logo_text.svg';
 import { useState } from 'react';
+import { Eye, EyeOff } from 'lucide-react';
 
 export default function Signup() {
 
@@ -11,6 +12,15 @@ export default function Signup() {
     const [error, setError] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined);
     const navigate = useNavigate();
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [showPassword2, setShowPassword2] = useState(false);
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    }
+    const togglePasswordVisibility2 = () => {
+        setShowPassword2(!showPassword2);
+    }
 
     function signup() {
         if (username === undefined || password === undefined || password2 === undefined || email === undefined) {
@@ -60,8 +70,19 @@ export default function Signup() {
             
             <div className="flex flex-col items-center justify-center gap-4">
                 <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setUsername(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2" type="text" placeholder="Username" />
-                <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setPassword(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2" type="password" placeholder="Password" />
-                <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setPassword2(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2" type="password" placeholder="Repeat Password" />
+
+                <div className='relative inline-block'>
+                    <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setPassword(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2"  type={showPassword ? "text" : "password"} placeholder="Password" />
+                    <button onClick={togglePasswordVisibility} className='w-5 h-5 !p-0 absolute top-2 right-3 !border-none'>{showPassword ? <Eye></Eye> : <EyeOff></EyeOff>}</button>
+                </div>
+
+
+                <div className='relative inline-block'>
+                    <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setPassword2(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2"  type={showPassword2 ? "text" : "password"} placeholder="Repeat Password" />
+                    <button onClick={togglePasswordVisibility2} className='w-5 h-5 !p-0 absolute top-2 right-3 !border-none'>{showPassword2 ? <Eye></Eye> : <EyeOff></EyeOff>}</button>
+                </div>
+
+
                 <input onKeyDown={(e) => {if (e.key === "Enter")signup();}} onChange={e => setEmail(e.target.value)} className="bg-white border-main min-w-70 min-h-10 p-1 pl-2" type="email" placeholder="E-Mail" />
                 <button onClick={signup} className='min-w-70 min-h-10 bg-violet text-white'>Register</button>
             </div>
