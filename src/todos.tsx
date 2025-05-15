@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Trash } from "lucide-react";
+import { Trash, Pencil } from "lucide-react";
 
 
 export default function Todos() {
@@ -107,6 +107,34 @@ export default function Todos() {
             });
     }
 
+    function updateTodo(e: ChangeEvent<HTMLInputElement>, id: number) {
+        const content = prompt("Update todo", todos.find(todo => todo.id === id)?.content);
+        if (content) {
+            fetch(`http://localhost:9001/todos/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+                },
+                body: JSON.stringify({ content }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        console.error("Error updating todo");
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log(data);
+                    setTodos(todos.map(todo => todo.id === id ? { ...todo, content } : todo));
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    }
+
     function logout() {
         localStorage.removeItem('authToken');
         window.location.href = '/login';
@@ -137,7 +165,10 @@ export default function Todos() {
                             {todo.content}
                         </div>
                         <div className="ml-auto">
-                            <button onClick={() => deleteTodo(event as any, todo.id)} className="bg-violet text-white flex justify-center items-center p-3 ml-5"><Trash className="w-4 h-4"/></button>
+                            <button onClick={() => deleteTodo(event as any, todo.id)} className="bg-violet text-white flex justify-center items-center ml-5 !p-1"><Trash className="w-5 h-5"/></button>
+                        </div>
+                        <div className="ml-1em">
+                            <button onClick={(e) => updateTodo(e as any, todo.id)} className="bg-violet text-white flex justify-center items-center ml-5 !p-1"><Pencil className="w-5 h-5"></Pencil></button>
                         </div>
 
                         {/*<p>{todo.finished_at}</p>*/}
