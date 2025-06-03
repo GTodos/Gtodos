@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { Trash, Pencil } from "lucide-react";
 import { Link, useNavigate } from 'react-router-dom';
+import ConfirmModal from "./modals/ConfirmModal";
 
 
 
@@ -100,6 +101,7 @@ export default function Todos() {
     }
 
     function deleteTodo(e: ChangeEvent<HTMLInputElement>, id: number) {
+
         fetch(`http://localhost:9001/todos/${id}`, {
             method: 'DELETE',
             headers: {
@@ -201,6 +203,13 @@ export default function Todos() {
                 ))}
             </div>
 
+            
+                <ConfirmModal 
+                    isOpen={false} 
+                    onConfirm={function (): void {} } 
+                    onCancel={function (): void {} } 
+                    message={""}>
+                </ConfirmModal>
             
             <div className="w-[calc(100vw-0vw)] bg-white-gray fixed bottom-0 left-0 p-5 drop-shadow-xl/50 flex flex-row items-center justify-between">
                 <div className="flex flex-row items-center gap-3">
