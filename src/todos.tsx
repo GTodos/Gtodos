@@ -12,19 +12,45 @@ export default function Todos() {
     const navigate = useNavigate();
 
 
+    type TodoAction = 'create' | 'get' | 'update' | 'done' | 'undone' | 'delete';
 
-    function createTodo() {
-        fetch('http://localhost:9001/todos', {
-            method: 'POST',
+    function handleTodoAction(action: TodoAction, id?: number, content?: string) {
+
+        let url = "http://localhost:9001/todos"
+        let method = "GET"
+
+        if (action == "update" || action == "done" || action == "undone" || action == "delete") {
+
+            method = "PUT"
+            url = url + `/${id}`
+
+            if (action == "done" || action == "undone") {
+                url = url + `/${action}`
+            }
+
+            if (action == "delete") {
+                method = "DELETE"
+            }
+            
+
+        }
+        else if (action == "create") {
+            method = "POST"
+        } 
+
+
+        fetch(url, {
+            method: method,
             headers: {
                 'Content-Type': 'application/json', 
                 'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
             },
-            body: JSON.stringify({ content: todoInput}),
+            body: content? JSON.stringify({content: content}): undefined
+
         })
             .then(response => {
                 if (!response.ok) {
-                    console.error("Error creating todo");
+                    console.error("Error contacting backend");
                     if (response.status === 401) {
                         alert("Session expired, please log in again");
                         navigate('/login');
@@ -33,132 +59,56 @@ export default function Todos() {
                 }
                 return response.json();
             })
+
+
             .then(data => {
                 console.log(data);
-                setTodos([...todos, data]);
+
+                if (action == "get") {
+                    setTodos(data);
+                } else if (action == "create") {
+                    setTodos([...todos, data])
+                } else if (action == "update") {
+                    setTodos(todos.map(todo => todo.id === id ? { ...todo, content } : todo));
+                } else if (action == "done" || action == "undone") {
+                    const checked = action == "done" ? true:false;
+                    setTodos(todos.map(todo => todo.id === id ? { ...todo, finished_at: checked } : todo));
+                } else if (action == "delete") {
+                    setTodos(todos.filter(todo => todo.id !== id));
+                }
+
             })
+
+
             .catch(error => {
                 console.error('Error:', error);
             });
+
+    }
+
+
+    function createTodo() {
+        handleTodoAction("create", undefined, todoInput)
     }
 
     function getTodos() {
-        fetch('http://localhost:9001/todos', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-            }})
-            .then(response => {
-                if (!response.ok) {
-                    console.error("Error getting todos");
-                    if (response.status === 401) {
-                        alert("Session expired, please log in again");
-                        navigate('/login');
-                    }
-                    return;
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                setTodos(data);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        handleTodoAction("get")
     }
 
-    function done(e: ChangeEvent<HTMLInputElement>, id: number) {
+    function doneUndone(e: ChangeEvent<HTMLInputElement>, id: number) {
         const checked = e.target.checked;
         const action = checked ? 'done' : 'undone';
-        //const finished_at = checked ? new Date().toISOString() : null;
-        fetch(`http://localhost:9001/todos/${id}/${action}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    console.error("Error updating todo");
-                    if (response.status === 401) {
-                        alert("Session expired, please log in again");
-                        navigate('/login');
-                    }
-                    return;
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                setTodos(todos.map(todo => todo.id === id ? { ...todo, finished_at: checked } : todo));
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        handleTodoAction(action, id)
     }
 
     function deleteTodo(e: ChangeEvent<HTMLInputElement>, id: number) {
-
-        fetch(`http://localhost:9001/todos/${id}`, {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    console.error("Error deleting todo");
-                    if (response.status === 401) {
-                        alert("Session expired, please log in again");
-                        navigate('/login');
-                    }
-                    return;
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-                setTodos(todos.filter(todo => todo.id !== id));
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+        handleTodoAction("delete", id)
     }
 
     function updateTodo(e: ChangeEvent<HTMLInputElement>, id: number) {
-        const content = prompt("Update todo", todos.find(todo => todo.id === id)?.content);
-        if (content) {
-            fetch(`http://localhost:9001/todos/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
-                },
-                body: JSON.stringify({ content }),
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        console.error("Error updating todo");
-                        if (response.status === 401) {
-                            alert("Session expired, please log in again");
-                            navigate('/login');
-                        }
-                        return;
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log(data);
-                    setTodos(todos.map(todo => todo.id === id ? { ...todo, content } : todo));
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    window.location.href = '/login';
-                });
+        const updatedText = prompt("Update todo", todos.find(todo => todo.id === id)?.content);
+        if(updatedText) {
+            handleTodoAction("update", id, updatedText)
         }
     }
 
@@ -186,7 +136,7 @@ export default function Todos() {
                     <div key={index} className="p-4 m-2 rounded flex items-center">
                         
                         <div>
-                            <input onChange={(e) => done(e, todo.id)} type="checkbox" checked={todo.finished_at?true:false} />
+                            <input onChange={(e) => doneUndone(e, todo.id)} type="checkbox" checked={todo.finished_at?true:false} />
                         </div>
                         <div className="pl-4">
                             {todo.content}
